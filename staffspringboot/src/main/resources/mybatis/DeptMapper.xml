@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hl.staffboot.dao.DeptDao">
+
+    <resultMap id="DeptMap" type="Dept">
+        <id column="deptno" property="deptno"/>
+        <result column="deptName" property="deptName"/>
+    </resultMap>
+
+    <select id="findDept" resultType="Dept">
+        select deptno,deptName
+        from dept
+    </select>
+</mapper>

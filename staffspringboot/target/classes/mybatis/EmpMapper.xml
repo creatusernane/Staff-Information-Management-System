@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hl.staffboot.dao.EmpDao">
+
+    <resultMap id="EmpMap" type="Emp">
+        <id column="id" property="id"/>
+        <result column="emp_name" property="empName"/>
+        <result column="sex" property="sex"/>
+        <result column="age" property="age"/>
+        <result column="dept_name" property="deptName"/>
+        <result column="emp_degree_name" property="empDegreeName"/>
+
+        <association property="sex1" javaType="Sex" resultMap="com.hl.staffboot.dao.SexDao.SexMap"></association>
+        <association property="dept" javaType="Dept" resultMap="com.hl.staffboot.dao.DeptDao.DeptMap"></association>
+        <association property="degree" javaType="Degree" resultMap="com.hl.staffboot.dao.DegreeDao.DegreeMap"></association>
+    </resultMap>
+
+    <select id="findEmp" resultMap="EmpMap">
+        select e.id,e.emp_name,s.sex_name,e.age,d.deptName,de.degree_name,e.dept_name,e.emp_degree_name,e.sex
+        from emp e left join sex s on e.sex= s.id
+        left join dept d on e.dept_name=d.deptno
+        left join degree de on e.emp_degree_name=de.id
+    </select>
+
+    <insert id="addEmp" parameterType="Emp">
+        insert into emp(emp_name,sex,age,dept_name,emp_degree_name)
+        values
+        (#{empName},#{sex},#{age},#{deptName},#{empDegreeName})
+    </insert>
+
+    <update id="updateEmp" parameterType="Emp">
+        update emp set emp_name=#{empName},sex=#{sex},age=#{age},dept_name=#{deptName},emp_degree_name=#{empDegreeName}
+        where id=#{id}
+    </update>
+
+    <delete id="deleteEmp" parameterType="int">
+        delete from emp
+        where id=#{id}
+    </delete>
+
+    <select id="findByCondition" resultMap="EmpMap">
+        select e.id,e.emp_name,s.sex_name,e.age,d.deptName,de.degree_name
+        from emp e left join sex s on e.sex= s.id
+        left join dept d on e.dept_name=d.deptno
+        left join degree de on e.emp_degree_name=de.id
+        <where>
+            <if test="empName !=null and empName!='' and empName!='null' ">
+                e.emp_name like concat('%',#{empName},'%')
+            </if>
+            <if test="deptno !=null and deptno!=0">
+                and d.deptno=#{deptno}
+            </if>
+            <if test="id !=null and id!=0">
+                and de.id=#{id}
+            </if>
+        </where>
+    </select>
+</mapper>

@@ -1,0 +1,17 @@
+server:
+  port: 8081
+spring:
+  application:
+    name: STAFFSPRINGBOOTSERVER
+  datasource:   # 配置连接池信息
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql://localhost:3306/staff
+    username: root
+    password: admin
+    driver-class-name: com.mysql.jdbc.Driver
+mybatis:
+  type-aliases-package: com.hl.staffboot.pojo
+  mapper-locations: mybatis/*.xml
+  configuration:
+    use-generated-keys: true
+    map-underscore-to-camel-case: true
